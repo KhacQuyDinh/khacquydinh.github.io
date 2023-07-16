@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html class="{% if site.dark_theme %}dark{% else %}light{% endif %}">
+
+<meta charset="{{ site.encoding }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+<meta name="author" content="{{ page.author | default: site.author | escape }}">
+<meta name="generator" content="Jekyll v{{ jekyll.version }}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+
+<link rel="stylesheet" type="text/css" href="/assets/css/custom_header.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script src="/assets/js/jquery-3.2.1.min.js"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<!-- <script src="/assets/js/bootstrap.min.js"></script> -->
+<!-- <link rel="stylesheet" href="/assets/css/bootstrap.min.css" /> -->
+<script src="/assets/js/default.js"></script>
+<link rel="stylesheet" href="{{ "/assets/css/index.css" | relative_url }}">
+<link rel="shortcut icon" type="image/png" href="{{ "favicon.png" | absolute_url}}">
+<link rel="stylesheet" href="{{ site.style | default: "theme" | prepend: "/assets/css/" | append: ".css" | relative_url }}">
+
+{% if site.plugins contains "jekyll-feed" %}
+  <link rel="alternate" type="application/atom+xml" 
+    href="{{ "/feed.xml" | relative_url }}" title="{{ site.title }}" />
+{% endif %}
+{% if page.mathjax or site.mathjax %}
+<link rel="stylesheet" href="{{ "/assets/katex/katex.min.css" | relative_url }}">
+<script defer src="{{ "/assets/katex/katex.min.js" | relative_url }}"></script>
+<script defer src="{{ "/assets/katex/contrib/mathtex-script-type.min.js" | relative_url }}"></script>
+{% endif %}
+{% if site.comments.disqus %}
+  <script src="//{{ site.comments.disqus }}.disqus.com/embed.js" async>
+  </script>
+{% endif %}
+{% if site.comments.isso %}
+  <script data-isso="http://{{ site.comments.isso }}" 
+    src="//{{ site.comments.isso }}/js/embed.min.js">
+  </script>
+{% endif %}
+<header style="position: fixed; transition: top 0.05s ease-in-out;
+               box-shadow: 0px 4px rgba(155, 155, 155, 0.2);"
+        class="nav-down">    
+    <div class="row" style="width: 100%;">  
+      <div class="col-md-7">       
+        <h2><a href="{{ site.base_url[page.lang] }}">{{ site.t['title'][page.lang] }}</a></h2>
+      </div>
+      <!-- {% if pages.size == 0 %} -->
+        <!-- {% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %} -->
+      <!-- {% endif %} -->
+
+      <div class="col-md-5" style="float: right;">
+        <!-- Start define languages options -->            
+        </div>    
+      </div>
+      <!-- End -->
+    </div>        
+
+    <!-- Navigation -->
+    <div>
+      <nav class="navbar navbar-expand-lg" style="margin-bottom: -10px;">        
+          <!-- Brand and toggle get grouped for better mobile display -->          
+          <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01"
+            aria-expanded="false" aria-label="Toggle navigation" id="btn_menu">
+              <!-- <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span> -->
+              Menu
+          </button>          
+      
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="nav navbar-nav"> 
+                {% assign pages=site.pages | where:"lang", page.lang | sort: 'order' %}
+                {% for node in pages %}
+                  {% if node.title %}
+                    <li class="nav-item">
+                      <a href="{{ node.url }}">{{ node.title }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}                                                 
+            </ul>
+            {% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}            
+            <ul class="nav navbar-nav navbar-right" id="ul_lang">
+                {% for node in pages %}
+                  <li class="nav-item">
+                    <a class="{{ node.lang }}" 
+                      href="{{ node.url }}">{{ node.lang }}</a>
+                  </li>
+                {% endfor %}
+            </ul>            
+          </div><!-- /.navbar-collapse -->                        
+      </nav>
+      {% if site.icons %}
+        <nav>
+        {% for link in site.icons %}
+          <a class="icon" href="{{ link[1] }}">
+            <svg>
+              <use xlink:href="{{ "/assets/fontawesome/icons.svg" | relative_url }}#{{ link[0] }}"></use>
+            </svg>
+            </a>
+        {% endfor %}
+        </nav>
+      {% endif %}  
+    </div>
+  <!-- End Navigation -->  
+</header>
+
+<div style="text-align: justify; text-justify: inter-word; margin-top: 170px;"
+    id="div_content">
+{{ content }}
+</div>
+
+</html>
